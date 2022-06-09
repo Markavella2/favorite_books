@@ -2,11 +2,11 @@ const express = require('express')
 const app = express()
 const MongoClient = require('mongodb').MongoClient
 const PORT = 2121
-require('dotenv').config()
+//require('dotenv').config()
 
 
 let db,
-    dbConnectionStr = process.env.DB_STRING,
+    dbConnectionStr = 'mongodb+srv://markavella1:Temp^Pass1@favorite-books.tqdd0.mongodb.net/?retryWrites=true&w=majority',
     dbName = 'books'
 
 MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
