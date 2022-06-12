@@ -6,7 +6,7 @@ require('dotenv').config()
 
 
 let db,
-    dbConnectionStr = 'mongodb+srv://markavella1:Temp^Pass1@favorite-books.tqdd0.mongodb.net/?retryWrites=true&w=majority',
+    dbConnectionStr = process.env.DB_STRING,
     dbName = 'books'
 
 MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
@@ -22,7 +22,7 @@ app.use(express.json())
 
 
 app.get('/',(request, response)=>{
-    db.collection('faveBooks').find().sort({likes: -1}).toArray()
+    db.collection('faveBooks').find().toArray()
     .then(data => {
         response.render('index.ejs', { info: data })
     })
@@ -38,9 +38,9 @@ app.post('/addBook', (request, response) => {
     })
     .catch(error => console.error(error))
 })
-
+//BELOW IS THE ERROR!!?? Fixed??
 app.put('/addOneLike', (request, response) => {
-    db.collection('faveBooks').updateOne({title: request.body.bookTitle, author: request.body.bookAuthor,likes: request.body.likesS},{
+    db.collection('faveBooks').updateOne({title: request.body.bookTitleS, author: request.body.bookAuthorS,likes: request.body.likesS},{
         $set: {
             likes:request.body.likesS + 1
           }
@@ -57,7 +57,8 @@ app.put('/addOneLike', (request, response) => {
 })
 
 app.delete('/deleteBook', (request, response) => {
-    db.collection('faveBooks').deleteOne({title: request.body.bookTitle})
+    //console.log(request)
+    db.collection('faveBooks').deleteOne({title: request.body.bookTitleS})
     .then(result => {
         console.log('Book Deleted')
         response.json('Book Deleted')
